@@ -54,7 +54,6 @@ export default function Layout({ children }) {
     <>
       <span
         className={`font-medium ${
-          // balikin jadi text-gray-800 di mobile, karena nav-nya putih
           isMobile ? 'text-gray-800 px-3 py-2' : 'text-gray-700'
         }`}
       >
@@ -136,15 +135,15 @@ export default function Layout({ children }) {
   );
 
   return (
-    // 1. Container luar untuk positioning
+    // Container luar untuk positioning
     <div className="relative min-h-screen">
-      {/* 2. Background gambar lu (di paling bawah) */}
+      {/*background gambar*/}
       <div className="absolute inset-0 bg-game-pattern bg-cover bg-fixed z-0"></div>
-      
-      {/* 3. Overlay putih transparan (di atas gambar) */}
+
+      {/*Overlay putih*/}
       <div className="absolute inset-0 bg-white opacity-90 z-10"></div>
 
-      {/* 4. Ini adalah div layout ASLI lu, ditaro di atas overlay */}
+      {/* notes */}
       <div className="relative z-20 min-h-screen">
         <nav className="bg-white shadow-md sticky top-0 z-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -154,7 +153,7 @@ export default function Layout({ children }) {
                   to={logoLink}
                   className="text-xl font-bold text-blue-600 hover:text-blue-700"
                 >
-                  YASMIN EduGame {/* Nama brand lu yang baru */}
+                  YASMIN EduGame {/* Update ko */}
                 </Link>
                 <span className="ml-2 text-sm text-gray-500 hidden sm:inline">
                   | SMA Mutiara Insan Nusantara
@@ -184,8 +183,7 @@ export default function Layout({ children }) {
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
-                // Balikin background mobile nav jadi putih
-                className="md:hidden bg-white shadow-inner overflow-hidden" 
+                className="md:hidden bg-white shadow-inner overflow-hidden"
               >
                 <div className="flex flex-col space-y-2 p-4">
                   <MenuLinks isMobile={true} />
@@ -195,7 +193,7 @@ export default function Layout({ children }) {
           </AnimatePresence>
         </nav>
 
-        {/* Strukturnya main tetap sama, GAK PAKE flex-grow */}
+        {/* Strukturnya main */}
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {children}
         </main>
