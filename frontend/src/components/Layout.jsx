@@ -119,7 +119,7 @@ export default function Layout({ children }) {
             {/* 1. Logo (Selalu Keliatan) */}
             <div className="flex items-center">
               <Link to={logoLink} className="text-xl font-bold text-blue-600 hover:text-blue-700">
-                Mutiara EduGame
+                YASMIN EduGame
               </Link>
               {/* Nama sekolah tetep ada di desktop/tablet */}
               <span className="ml-2 text-sm text-gray-500 hidden sm:inline">

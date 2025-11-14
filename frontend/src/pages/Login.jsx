@@ -46,7 +46,7 @@ export default function Login() {
       >
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-500 to-pink-500">
-            Mutiara EduGame
+            YASMIN EduGame
           </h1>
           <p className="text-gray-600 text-sm">
             SMA Mutiara Insan Nusantara
