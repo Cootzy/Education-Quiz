@@ -30,12 +30,10 @@ export default function QuizGame() {
   const [feedback, setFeedback] = useState(null)
   const [pointsPopup, setPointsPopup] = useState({ show: false, points: 0 })
 
-  // --- AUDIO SFX (YANG UDAH ADA) ---
   const correctSound = useMemo(() => new Audio('/sounds/correct.mp3'), [])
   const wrongSound = useMemo(() => new Audio('/sounds/wrong.mp3'), [])
   const clickSound = useMemo(() => new Audio('/sounds/click.mp3'), [])
 
-  // --- AUDIO SFX BARU (BGM & KEMENANGAN) ---
   const completeSound = useMemo(() => new Audio('/sounds/complete.mp3'), [])
   const bgmSound = useMemo(() => {
     const audio = new Audio('/sounds/bgm.mp3');
@@ -43,7 +41,6 @@ export default function QuizGame() {
     audio.volume = 0.5; // BGM harus pelan
     return audio;
   }, []);
-  // --- END ---
 
   useEffect(() => {
     loadQuestions()
@@ -83,7 +80,6 @@ export default function QuizGame() {
     return () => clearInterval(interval)
   }, [timer, submitted, showResults, loading, currentIndex, questions, handleNext])
 
-  // --- useEffect BARU: Mainkan BGM ---
   useEffect(() => {
     if (!loading && questions.length > 0 && !showResults) {
       bgmSound.play().catch(e => {
@@ -98,7 +94,6 @@ export default function QuizGame() {
     };
   }, [loading, questions.length, showResults, bgmSound]);
 
-  // --- useEffect BARU: Mainkan Suara Kemenangan ---
   useEffect(() => {
     if (showResults) {
       completeSound.play().catch(e => console.error("Error playing complete sound", e));

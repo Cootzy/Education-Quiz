@@ -1,4 +1,3 @@
-// frontend/src/pages/StudentDashboard.jsx
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Layout from '../components/Layout'
@@ -56,8 +55,8 @@ export default function StudentDashboard() {
   return (
     <Layout>
       <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-500 to-pink-500">
-          Pilih Misi Belajar
+        <h1 className="text-3xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-500 to-pink-500">
+          Pilih Mata Pelajaran
         </h1>
         <p className="text-gray-600 text-lg">
           Pilih mata pelajaran yang ingin kamu taklukkan hari ini.
