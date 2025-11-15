@@ -20,8 +20,12 @@ export default {
           900: '#0c4a6e',
         },
       },
+      // TAMBAHIN INI
+      backgroundImage: {
+        'game-pattern': "url('/gamify-bg.jpg')",
+      }
+      // SAMPAI SINI
     },
   },
   plugins: [],
 }
-

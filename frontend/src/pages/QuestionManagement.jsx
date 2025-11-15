@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react'
-import Layout from '../components/Layout'
-import { api } from '../services/api'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useState, useEffect } from 'react';
+import Layout from '../components/Layout';
+import { api } from '../services/api';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function QuestionManagement() {
-  const [questions, setQuestions] = useState([])
-  const [subjects, setSubjects] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [showModal, setShowModal] = useState(false)
-  const [editingQuestion, setEditingQuestion] = useState(null)
+  const [questions, setQuestions] = useState([]);
+  const [subjects, setSubjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [editingQuestion, setEditingQuestion] = useState(null);
   const [formData, setFormData] = useState({
     subject_id: '',
     question_type: 'multiple_choice',
@@ -17,47 +17,47 @@ export default function QuestionManagement() {
     correct_answer: { selected: 0 },
     explanation: '',
     points: 10,
-  })
+  });
 
   useEffect(() => {
-    loadData()
-  }, [])
+    loadData();
+  }, []);
 
   const loadData = async () => {
     try {
       const [questionsRes, subjectsRes] = await Promise.all([
         api.getQuestions(),
         api.getSubjects(),
-      ])
-      setQuestions(questionsRes.data)
-      setSubjects(subjectsRes.data)
+      ]);
+      setQuestions(questionsRes.data);
+      setSubjects(subjectsRes.data);
     } catch (error) {
-      console.error('Error loading data:', error)
+      console.error('Error loading data:', error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleOpenModal = (question = null) => {
     if (question) {
-      setEditingQuestion(question)
-      let initialOptions = ['', '', '', '']
-      let initialCorrectAnswer = question.correct_answer
-      
+      setEditingQuestion(question);
+      let initialOptions = ['', '', '', ''];
+      let initialCorrectAnswer = question.correct_answer;
+
       if (question.question_type === 'multiple_choice') {
-        initialOptions = question.options || ['', '', '', '']
-        initialCorrectAnswer = question.correct_answer || { selected: 0 }
+        initialOptions = question.options || ['', '', '', ''];
+        initialCorrectAnswer = question.correct_answer || { selected: 0 };
       } else if (question.question_type === 'drag_drop') {
-        initialOptions = question.options || ['', '', '', '']
-        initialCorrectAnswer = question.correct_answer || { order: [] }
+        initialOptions = question.options || ['', '', '', ''];
+        initialCorrectAnswer = question.correct_answer || { order: [] };
       } else if (question.question_type === 'fill_blank') {
-        initialOptions = null
-        initialCorrectAnswer = question.correct_answer || { fills: {} }
+        initialOptions = null;
+        initialCorrectAnswer = question.correct_answer || { fills: {} };
       } else if (question.question_type === 'true_false') {
-        initialOptions = null
-        initialCorrectAnswer = question.correct_answer || { answer: true }
+        initialOptions = null;
+        initialCorrectAnswer = question.correct_answer || { answer: true };
       }
-      
+
       setFormData({
         subject_id: question.subject_id,
         question_type: question.question_type,
@@ -66,9 +66,9 @@ export default function QuestionManagement() {
         correct_answer: initialCorrectAnswer,
         explanation: question.explanation || '',
         points: question.points,
-      })
+      });
     } else {
-      setEditingQuestion(null)
+      setEditingQuestion(null);
       setFormData({
         subject_id: '',
         question_type: 'multiple_choice',
@@ -77,60 +77,62 @@ export default function QuestionManagement() {
         correct_answer: { selected: 0 },
         explanation: '',
         points: 10,
-      })
+      });
     }
-    setShowModal(true)
-  }
+    setShowModal(true);
+  };
 
   const handleCloseModal = () => {
-    setShowModal(false)
-    setEditingQuestion(null)
-  }
+    setShowModal(false);
+    setEditingQuestion(null);
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     try {
       const data = {
         ...formData,
-        options: (formData.question_type === 'multiple_choice' || formData.question_type === 'drag_drop') 
-          ? formData.options 
-          : null,
-      }
+        options:
+          formData.question_type === 'multiple_choice' ||
+          formData.question_type === 'drag_drop'
+            ? formData.options
+            : null,
+      };
 
       if (editingQuestion) {
-        await api.updateQuestion(editingQuestion.id, data)
+        await api.updateQuestion(editingQuestion.id, data);
       } else {
-        await api.createQuestion(data)
+        await api.createQuestion(data);
       }
 
-      await loadData()
-      handleCloseModal()
+      await loadData();
+      handleCloseModal();
     } catch (error) {
-      console.error('Error saving question:', error)
-      alert('Terjadi kesalahan saat menyimpan pertanyaan')
+      console.error('Error saving question:', error);
+      alert('Terjadi kesalahan saat menyimpan pertanyaan');
     }
-  }
+  };
 
   const handleDelete = async (id) => {
     if (!confirm('Apakah Anda yakin ingin menghapus pertanyaan ini?')) {
-      return
+      return;
     }
 
     try {
-      await api.deleteQuestion(id)
-      await loadData()
+      await api.deleteQuestion(id);
+      await loadData();
     } catch (error) {
-      console.error('Error deleting question:', error)
-      alert('Terjadi kesalahan saat menghapus pertanyaan')
+      console.error('Error deleting question:', error);
+      alert('Terjadi kesalahan saat menghapus pertanyaan');
     }
-  }
+  };
 
   const handleOptionChange = (index, value) => {
-    const newOptions = [...formData.options]
-    newOptions[index] = value
-    setFormData({ ...formData, options: newOptions })
-  }
+    const newOptions = [...formData.options];
+    newOptions[index] = value;
+    setFormData({ ...formData, options: newOptions });
+  };
 
   if (loading) {
     return (
@@ -139,7 +141,7 @@ export default function QuestionManagement() {
           <div className="text-xl">Memuat pertanyaan...</div>
         </div>
       </Layout>
-    )
+    );
   }
 
   return (
@@ -149,9 +151,7 @@ export default function QuestionManagement() {
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
             Kelola Pertanyaan
           </h1>
-          <p className="text-gray-600">
-            Buat, edit, dan hapus pertanyaan kuis
-          </p>
+          <p className="text-gray-600">Buat, edit, dan hapus pertanyaan</p>
         </div>
         <button
           onClick={() => handleOpenModal()}
@@ -251,7 +251,10 @@ export default function QuestionManagement() {
                   <select
                     value={formData.subject_id}
                     onChange={(e) =>
-                      setFormData({ ...formData, subject_id: parseInt(e.target.value) })
+                      setFormData({
+                        ...formData,
+                        subject_id: parseInt(e.target.value),
+                      })
                     }
                     required
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -272,25 +275,25 @@ export default function QuestionManagement() {
                   <select
                     value={formData.question_type}
                     onChange={(e) => {
-                      const newType = e.target.value
-                      let newFormData = { ...formData, question_type: newType }
-                      
+                      const newType = e.target.value;
+                      let newFormData = { ...formData, question_type: newType };
+
                       // Reset correct_answer based on question type
                       if (newType === 'multiple_choice') {
-                        newFormData.correct_answer = { selected: 0 }
-                        newFormData.options = ['', '', '', '']
+                        newFormData.correct_answer = { selected: 0 };
+                        newFormData.options = ['', '', '', ''];
                       } else if (newType === 'drag_drop') {
-                        newFormData.correct_answer = { order: [] }
-                        newFormData.options = ['', '', '', '']
+                        newFormData.correct_answer = { order: [] };
+                        newFormData.options = ['', '', '', ''];
                       } else if (newType === 'fill_blank') {
-                        newFormData.correct_answer = { fills: {} }
-                        newFormData.options = null
+                        newFormData.correct_answer = { fills: {} };
+                        newFormData.options = null;
                       } else if (newType === 'true_false') {
-                        newFormData.correct_answer = { answer: true }
-                        newFormData.options = null
+                        newFormData.correct_answer = { answer: true };
+                        newFormData.options = null;
                       }
-                      
-                      setFormData(newFormData)
+
+                      setFormData(newFormData);
                     }}
                     required
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -309,7 +312,10 @@ export default function QuestionManagement() {
                   <textarea
                     value={formData.question_text}
                     onChange={(e) =>
-                      setFormData({ ...formData, question_text: e.target.value })
+                      setFormData({
+                        ...formData,
+                        question_text: e.target.value,
+                      })
                     }
                     required
                     rows={3}
@@ -340,7 +346,9 @@ export default function QuestionManagement() {
                         <input
                           type="text"
                           value={option}
-                          onChange={(e) => handleOptionChange(index, e.target.value)}
+                          onChange={(e) =>
+                            handleOptionChange(index, e.target.value)
+                          }
                           required
                           className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                           placeholder={`Opsi ${index + 1}`}
@@ -359,12 +367,16 @@ export default function QuestionManagement() {
                       type="text"
                       value={formData.options.join(', ')}
                       onChange={(e) => {
-                        const options = e.target.value.split(',').map((s) => s.trim())
+                        const options = e.target.value
+                          .split(',')
+                          .map((s) => s.trim());
                         setFormData({
                           ...formData,
                           options: options,
-                          correct_answer: { order: [...Array(options.length).keys()] },
-                        })
+                          correct_answer: {
+                            order: [...Array(options.length).keys()],
+                          },
+                        });
                       }}
                       required
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -376,17 +388,20 @@ export default function QuestionManagement() {
                 {formData.question_type === 'fill_blank' && (
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Jawaban Benar (format JSON: {"{blank1: 'jawaban1', blank2: 'jawaban2'}"})
+                      Jawaban Benar (format JSON:{' '}
+                      {"{blank1: 'jawaban1', blank2: 'jawaban2'}"})
                     </label>
                     <textarea
-                      value={JSON.stringify(formData.correct_answer.fills || {})}
+                      value={JSON.stringify(
+                        formData.correct_answer.fills || {}
+                      )}
                       onChange={(e) => {
                         try {
-                          const fills = JSON.parse(e.target.value)
+                          const fills = JSON.parse(e.target.value);
                           setFormData({
                             ...formData,
                             correct_answer: { fills },
-                          })
+                          });
                         } catch (err) {
                           // Invalid JSON, ignore
                         }
@@ -418,7 +433,9 @@ export default function QuestionManagement() {
                           }
                           className="mr-2"
                         />
-                        <span className="text-lg font-semibold text-green-600">✓ Benar</span>
+                        <span className="text-lg font-semibold text-green-600">
+                          ✓ Benar
+                        </span>
                       </label>
                       <label className="flex items-center cursor-pointer">
                         <input
@@ -433,7 +450,9 @@ export default function QuestionManagement() {
                           }
                           className="mr-2"
                         />
-                        <span className="text-lg font-semibold text-red-600">✗ Salah</span>
+                        <span className="text-lg font-semibold text-red-600">
+                          ✗ Salah
+                        </span>
                       </label>
                     </div>
                   </div>
@@ -462,7 +481,10 @@ export default function QuestionManagement() {
                     type="number"
                     value={formData.points}
                     onChange={(e) =>
-                      setFormData({ ...formData, points: parseInt(e.target.value) })
+                      setFormData({
+                        ...formData,
+                        points: parseInt(e.target.value),
+                      })
                     }
                     required
                     min="1"
@@ -491,6 +513,5 @@ export default function QuestionManagement() {
         )}
       </AnimatePresence>
     </Layout>
-  )
+  );
 }
-

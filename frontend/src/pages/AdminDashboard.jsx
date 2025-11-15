@@ -6,7 +6,7 @@ export default function AdminDashboard() {
   const features = [
     {
       title: 'Kelola Pertanyaan',
-      description: 'Buat, edit, dan hapus pertanyaan kuis',
+      description: 'Buat, edit, dan hapus pertanyaan',
       link: '/admin/questions',
       icon: '📝',
       color: 'blue',
@@ -34,7 +34,7 @@ export default function AdminDashboard() {
           Dashboard Admin
         </h1>
         <p className="text-gray-600">
-          Kelola platform kuis edukatif dari sini
+          Kelola platform EduGame dari sini
         </p>
       </div>
 
